@@ -1,0 +1,103 @@
+# Instructions
+
+- Following Playwright test failed.
+- Explain why, be concise, respect Playwright best practices.
+- Provide a snippet of code with the fix, if possible.
+
+# Test info
+
+- Name: checkoutFlow.spec.ts >> End to End checkout flow using login API
+- Location: tests/checkoutFlow.spec.ts:35:5
+
+# Error details
+
+```
+Test timeout of 60000ms exceeded while setting up "auth".
+```
+
+```
+Error: apiRequestContext.post: Request context disposed.
+Call log:
+  - → POST https://premier.ticketek.com.au/Membership/Login.aspx
+    - user-agent: Playwright/1.64.1 (x64; macOS 15.7) node/22.22
+    - accept: application/json
+    - accept-encoding: gzip,deflate,br
+    - Content-Type: application/json
+    - content-length: 66
+
+```
+
+# Test source
+
+```ts
+  1  | import { test as baseTest, expect, type Cookie, type Page } from '@playwright/test';
+  2  | import { POManager } from '../pages/POManager';
+  3  | import { ENV } from '../config/environment';
+  4  | 
+  5  | export type AuthData = {
+  6  |   token: string;
+  7  |   cookies: Cookie[];
+  8  | };
+  9  | 
+  10 | type PageFixtures = {
+  11 |   pom: POManager;
+  12 |   auth: AuthData;
+  13 | };
+  14 | 
+  15 | export const test = baseTest.extend<PageFixtures>({
+  16 |   auth: async ({ request }, use) => {
+  17 |     const { email, password } = ENV.credentials;
+  18 |     if (!email || !password) {
+  19 |       throw new Error('API login requires username and password to be set in .env');
+  20 |     }
+  21 | 
+> 22 |     const loginResponse = await request.post(ENV.authLoginUrl, {
+     |                                         ^ Error: apiRequestContext.post: Request context disposed.
+  23 |       headers: {
+  24 |       'Content-Type': 'application/json',
+  25 |       'Accept': 'application/json',
+  26 |     },
+  27 |       data: { email, password },
+  28 |     });
+  29 | 
+  30 | 
+  31 |     const status = loginResponse.status();
+  32 |   const text = await loginResponse.text();
+  33 | 
+  34 |   console.log('Login status code:', status);
+  35 |   console.log('Login response content-type:', loginResponse.headers()['content-type']);
+  36 |   console.log('Login response body snippet:', text.slice(0, 300));
+  37 | 
+  38 |   
+  39 |     if (!loginResponse.ok()) {
+  40 |       throw new Error(`API login failed with HTTP ${loginResponse.status()}`);
+  41 |     }
+  42 | 
+  43 |     const responseBody = await loginResponse.json();
+  44 |     const token = responseBody.token || responseBody.accessToken || '';
+  45 | 
+  46 |     const storageState = await request.storageState();
+  47 |     const authCookies = storageState.cookies;
+  48 | 
+  49 |     await use({ token, cookies: authCookies });
+  50 |   },
+  51 | 
+  52 |   pom: async ({ page }, use) => {
+  53 |     const pom = new POManager(page);
+  54 |     await use(pom);
+  55 |   },
+  56 | 
+  57 |   page: async ({ page }, use) => {
+  58 |     await page.addLocatorHandler(
+  59 |       page.getByRole('heading', { name: 'We value your privacy' }),
+  60 |       async () => {
+  61 |         await page.getByRole('button', { name: 'Close' }).click();
+  62 |       }
+  63 |     );
+  64 |     await use(page);
+  65 |   },
+  66 | });
+  67 | 
+  68 | export { expect } from '@playwright/test';
+  69 | export { Page } from '@playwright/test';
+```

@@ -1,0 +1,8 @@
+Login status code: 200
+Login response content-type: text/html; charset=utf-8
+Login response body snippet: <!DOCTYPE html>
+
+
+<!-- <a> </a> -->
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" > 
+<head id="ctl00_Head1"><link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI7

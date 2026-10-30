@@ -1,0 +1,1 @@
+[{"name":"Timeout & Locator Failures","matchedStatuses":["broken","failed"],"messageRegex":".*(timeout|waiting for locator|element\\(s\\) not found).*"},{"name":"Assertion / Business Logic Mismatches","matchedStatuses":["failed"],"messageRegex":".*(expect\\(|to(Be|Contain|HaveText)).*"}]
