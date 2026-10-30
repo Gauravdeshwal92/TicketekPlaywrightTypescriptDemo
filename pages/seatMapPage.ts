@@ -12,7 +12,7 @@ export class SeatMapPage{
     constructor(page:Page){
 
         this.page=page
-        this.checkout_btn = page.locator('#goToPaymentButton')
+        this.checkout_btn=page.getByRole('button', { name: 'Go to checkout' })
         this.addMoreTickets_btn = page.getByRole('link',{name:'Add More Tickets'})
 
     }
@@ -20,6 +20,5 @@ export class SeatMapPage{
     async goToCheckout(){
         await expect(this.addMoreTickets_btn).toBeVisible({ timeout: 10000 });
         await this.checkout_btn.click()
-       // await this.checkout_btn.click({delay:8000})
     }
 }

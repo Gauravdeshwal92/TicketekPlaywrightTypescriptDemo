@@ -1,1 +1,0 @@
-customer_id is 42276161 and transaction_number is 20261029,48367
