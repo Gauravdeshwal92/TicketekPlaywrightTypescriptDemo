@@ -17,7 +17,7 @@ export class CheckoutPage{
         this.yourBasket_txt=page.getByRole('heading',{name:'Your basket'});
         this.basketSeatSection = page.locator('.basket_seat_section')
         this.deliveryMethodBasket=page.getByLabel('Delivery Method')
-        this.submitPayment_btn=page.locator('.submitPayment')
+        this.submitPayment_btn=page.getByRole('button',{name:'Submit payment'})
         this.enmoreTheatre_tAndC=page.getByRole('checkbox',{name:'Enmore Theatre'})
         this.espload_tAndC=page.getByRole('checkbox',{name:'ESPLOAD'})
 

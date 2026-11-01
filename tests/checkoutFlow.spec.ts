@@ -2,7 +2,7 @@ import { test, expect } from "../fixtures/testFixture";
 import { ENV } from '../config/environment';
 
 
-test('End to End checkout flow',{tag:['@smoke']}, async ({ page, pom}) => {
+test('End to End checkout flow',{tag:['@smoke']}, async ({ page, pom}, testInfo) => {
   
  
     await page.goto(ENV.showUrl)
@@ -26,7 +26,10 @@ test('End to End checkout flow',{tag:['@smoke']}, async ({ page, pom}) => {
     const order_status = await pom.confirmPage.orderConfirmationMessage()
     expect(order_status).toContain(ENV.showData.orderStatus)
     const {customer_id:customerID, transaction_number} = await pom.confirmPage.orderDetails()
-    console.log("customer_id is "+customerID+" and transaction_number is "+transaction_number)
+    await testInfo.attach("order details", {
+        body: `customer_id is ${customerID} and transaction_number is ${transaction_number}`,
+        contentType: "text/plain",
+    })
 })
 
 
