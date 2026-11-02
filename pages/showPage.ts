@@ -1,6 +1,5 @@
 
-import {type Page, type Locator, expect} from '@playwright/test'
-import { TIMEOUT } from 'node:dns';
+import {type Page, type Locator} from '@playwright/test'
 
 export class ShowPage{
 
@@ -8,24 +7,23 @@ export class ShowPage{
     showTitle_txt: Locator;
     findTickets_btn: Locator;
     performanceDate:Locator
-    selectDate:Locator
+
 
     constructor(page:Page){
         this.venueName = page.locator('span.plainText');
         this.showTitle_txt=page.getByRole('heading', { name: 'ESPLOAD tickets', exact: true })
         this.findTickets_btn=page.getByRole('button', { name: 'Find Tickets' })
         this.performanceDate=page.getByRole('combobox')
-        this.selectDate=page.locator('option')
+  
         }
 
-     async getShowTitle():Promise<String>{
-
+     async getShowTitle(){
         const showTitle = await this.showTitle_txt.innerText();
-        return showTitle ? showTitle.replace(/\s+/g,' ').trim() :''
+        return showTitle.replace(/\s+/g,' ').trim();
     }
 
 
-    async getVenueSelected():Promise<string>{
+    async getVenueSelected(){
 
         const venueName = await this.venueName.innerText();
         return venueName ? venueName.trim() :''

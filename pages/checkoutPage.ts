@@ -29,7 +29,7 @@ export class CheckoutPage{
         await expect(this.yourBasket_txt).toBeVisible();
         const matchingItems = this.basketSeatSection.filter({ hasText: category });
         await expect(matchingItems.first()).toBeVisible();
-        return matchingItems.count();
+        return await matchingItems.count();
     }
 
     async deliveryMethodInBasket(){
@@ -45,6 +45,4 @@ export class CheckoutPage{
         await this.enmoreTheatre_tAndC.check()
         await this.espload_tAndC.check()
     }
-
-
 }

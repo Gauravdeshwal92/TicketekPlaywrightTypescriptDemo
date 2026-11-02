@@ -23,9 +23,9 @@ export default defineConfig({
   fullyParallel: true,
   /* Reporter to use. See https://playwright.dev/docs/test-reporters */
   reporter: [
-    ['html',{open:'never'}],
+    ['html'],
     ['allure-playwright',{
-      detail:true,
+      detail:false,
       outputFolder:'allure-results',
       suiteTitle:true,
       categories: [
