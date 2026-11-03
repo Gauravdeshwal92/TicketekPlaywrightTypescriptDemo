@@ -33,7 +33,6 @@ steps:
   - script: npx playwright test
     displayName: 'Execute Playwright Test Suite'
     env:
-      CI: $(CI)
       SHOW_URL: $(SHOW_URL)
       TEST_USER_EMAIL: $(TEST_USER_EMAIL)
       TEST_USER_PASSWORD: $(TEST_USER_PASSWORD)
