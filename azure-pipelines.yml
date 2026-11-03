@@ -1,0 +1,57 @@
+trigger:
+  branches:
+    include:
+      - main
+      - master
+pr:
+  branches:
+    include:
+      - main
+      - master
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+variables:
+  # Reference Azure DevOps Library Variable Group for secure credentials
+  # - group: ticketek-automation-secrets
+  CI: 'true'
+  HEADLESS: 'true'
+
+steps:
+  - task: NodeTool@0
+    displayName: 'Install Node.js 20.x'
+    inputs:
+      versionSpec: '20.x'
+
+  - script: npm ci
+    displayName: 'Install NPM Dependencies'
+
+  - script: npx playwright install --with-deps
+    displayName: 'Install Playwright Browsers & OS Dependencies'
+
+  - script: npx playwright test
+    displayName: 'Execute Playwright Test Suite'
+    env:
+      CI: $(CI)
+      SHOW_URL: $(SHOW_URL)
+      TEST_USER_EMAIL: $(TEST_USER_EMAIL)
+      TEST_USER_PASSWORD: $(TEST_USER_PASSWORD)
+
+  # Publish Playwright HTML Report (Traces, Screenshots, Videos)
+  - task: PublishPipelineArtifact@1
+    displayName: 'Publish Playwright HTML Report'
+    condition: always() # Uploads even if tests fail
+    inputs:
+      targetPath: 'playwright-report'
+      artifact: 'playwright-report-$(Build.BuildId)'
+      publishLocation: 'pipeline'
+
+  # Publish Allure Results (for downstream reporting or Allure server ingestion)
+  - task: PublishPipelineArtifact@1
+    displayName: 'Publish Allure Raw Results'
+    condition: always()
+    inputs:
+      targetPath: 'allure-results'
+      artifact: 'allure-results-$(Build.BuildId)'
+      publishLocation: 'pipeline'

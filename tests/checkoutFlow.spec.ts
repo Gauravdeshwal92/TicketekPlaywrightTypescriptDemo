@@ -2,12 +2,6 @@ import { test, expect } from "../fixtures/testFixture";
 import { ENV } from '../config/environment';
 import { E2EBookingData as testData } from '../data/bookingData';
 
-test.use({
-  screenshot: 'off',
-  video: 'off',
-  trace: 'off',
-});
-
 test.beforeEach(async ({ page }) => {
   await page.goto(ENV.showUrl);
 });

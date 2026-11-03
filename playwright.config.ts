@@ -12,6 +12,8 @@ import path from 'path'
 
 dotenv.config({path:path.resolve(__dirname,'.env')});
 
+workers: process.env.CI ? 2 : '50%'
+
 /**
  * See https://playwright.dev/docs/test-configuration.
  */
